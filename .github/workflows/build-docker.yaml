@@ -25,7 +25,7 @@ jobs:
         uses: yuya-takeyama/monotonix/actions/generate-docker-build-matrix@init
         with:
           root-dir: apps
-          global-config-file: apps/monotonix-global.yaml
+          global-config-file-path: apps/monotonix-global.yaml
           datetime-tag-timezone: Asia/Tokyo
       - run: |
           echo "$BUILD_PARAMS"
