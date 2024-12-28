@@ -1,7 +1,8 @@
 metadata:
   name: hello-world
 jobs:
-  - on:
+  dev_main:
+    on:
       push:
         branches:
           - main

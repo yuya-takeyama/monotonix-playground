@@ -28,8 +28,11 @@ jobs:
           global-config-file-path: apps/monotonix-global.yaml
           datetime-tag-timezone: Asia/Tokyo
       - run: |
+          echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+      - run: |
           echo "$BUILD_PARAMS"
-          echo "foo"
         env:
           BUILD_PARAMS: ${{ steps.build-params.outputs.build-params }}
 
