@@ -6,6 +6,7 @@ jobs:
     loader: docker_build
     docker_build:
       environment:
+        type: aws
         aws:
           identity: dev_main
           registry: dev_main
