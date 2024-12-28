@@ -18,28 +18,27 @@ jobs:
     permissions:
       contents: read
     outputs:
-      build-params: ${{ steps.build-params.outputs.build-params }}
+      build-params: ${{ steps.build-params.outputs.jobs }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - id: build-params
-        uses: yuya-takeyama/monotonix/actions/generate-docker-build-matrix@init
+        uses: yuya-takeyama/monotonix/actions/load-jobs@init
         with:
           root-dir: apps
-          global-config-file-path: apps/monotonix-global.yaml
-          datetime-tag-timezone: Asia/Tokyo
       - run: |
           echo "$GITHUB_CONTEXT"
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
       - run: |
-          echo "$BUILD_PARAMS"
+          echo "$JOBS"
         env:
-          BUILD_PARAMS: ${{ steps.build-params.outputs.build-params }}
+          JOBS: ${{ steps.build-params.outputs.jobs }}
 
   build:
+    if: ${{ false }}
     name: ${{ matrix.build-params.label }}
     needs: setup
-    if: ${{ needs.setup.outputs.build-params != '[]' }}
+    # if: ${{ needs.setup.outputs.build-params != '[]' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
