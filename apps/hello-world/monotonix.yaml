@@ -1,3 +1,5 @@
+metadata:
+  name: hello-world
 jobs:
   - on:
       push:
