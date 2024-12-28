@@ -1,0 +1,15 @@
+loaders:
+  docker_build:
+    environment:
+      type: aws
+      aws:
+        identities:
+          dev_main:
+            iam_role: arn:aws:iam::943566097936:role/monotonix-builder-main
+            region: ap-northeast-1
+        registries:
+          dev_main:
+            type: private
+            identity: dev_main
+            region: ap-northeast-1
+            repository_base: 943566097936.dkr.ecr.ap-northeast-1.amazonaws.com/monotonix-playground/apps
