@@ -29,6 +29,7 @@ jobs:
           datetime-tag-timezone: Asia/Tokyo
       - run: |
           echo "$BUILD_PARAMS"
+          echo "foo"
         env:
           BUILD_PARAMS: ${{ steps.build-params.outputs.build-params }}
 
