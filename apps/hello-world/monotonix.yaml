@@ -5,9 +5,9 @@ jobs:
           - main
     loader: docker_build
     docker_build:
-      environment: aws
-      aws:
-        identity: dev_main
-        registry: dev_main
+      environment:
+        aws:
+          identity: dev_main
+          registry: dev_main
       tagging: always_latest
       platforms: ['linux/amd64']
