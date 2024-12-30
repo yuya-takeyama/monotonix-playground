@@ -18,10 +18,10 @@ jobs:
     permissions:
       contents: read
     outputs:
-      build-params: ${{ steps.build-params.outputs.jobs }}
+      #build-params: ${{ steps.build-params.outputs.jobs }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - id: build-params
+      - id: job-configs
         uses: yuya-takeyama/monotonix/actions/load-job-configs@init
         with:
           root-dir: apps
@@ -32,7 +32,7 @@ jobs:
       - run: |
           echo "$JOB_CONFIGS"
         env:
-          JOB_CONFIGS: ${{ steps.build-params.outputs.job-configs }}
+          JOB_CONFIGS: ${{ steps.job-configs.outputs.result }}
 
   build:
     if: ${{ false }}
