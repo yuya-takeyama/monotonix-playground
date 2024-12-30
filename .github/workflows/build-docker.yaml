@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: read
     outputs:
-      build-params: ${{ steps.job-configs.outputs.result }}
+      build-params: ${{ steps.job-params.outputs.result }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - id: job-configs
@@ -45,36 +45,35 @@ jobs:
           JOB_PARAMS: ${{ steps.job-params.outputs.result }}
 
   build:
-    if: ${{ false }}
-    name: ${{ matrix.build-params.label }}
+    # name: ${{ matrix.build-params.label }}
     needs: setup
-    # if: ${{ needs.setup.outputs.build-params != '[]' }}
+    if: ${{ needs.setup.outputs.build-params != '[]' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
     strategy:
       matrix:
-        build-params: ${{ fromJSON(needs.setup.outputs.build-params) }}
+        job-params: ${{ fromJSON(needs.setup.outputs.build-params) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - run: |
           echo "$BUILD_PARAMS"
         env:
-          BUILD_PARAMS: ${{ toJSON(matrix.build-params) }}
+          BUILD_PARAMS: ${{ toJSON(matrix.job-params) }}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
-          role-to-assume: ${{ matrix.build-params.job.config.environment.aws.identity.iam_role }}
-          aws-region: ${{ matrix.build-params.job.config.environment.aws.identity.region }}
+          role-to-assume: ${{ matrix.job-params.param.registry.aws.iam.role }}
+          aws-region: ${{ matrix.job-params.param.registry.aws.iam.role }}
       - id: login-ecr
         uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
         with:
-          registry-type: ${{ matrix.build-params.job.config.environment.aws.registry.type }}
+          registry-type: ${{ matrix.job-params.param.registry.aws.repository.type }}
       - uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
       - uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6.9.0
         with:
-          context: ${{ matrix.build-params.job.config.context }}
+          context: ${{ matrix.job-params.param.context }}
           push: true
-          tags: ${{ matrix.build-params.job.config.tags }}
-          platforms: ${{ matrix.build-params.job.config.platforms }}
+          tags: ${{ matrix.job-params.param.tags }}
+          platforms: ${{ matrix.job-params.param.platforms }}
