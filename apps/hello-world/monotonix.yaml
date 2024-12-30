@@ -6,26 +6,26 @@ jobs:
       push:
         branches:
           - main
+    type: docker_build
     config:
-      loader: docker_build
-      docker_build:
-        environment:
-          type: aws
-          aws:
-            identity: dev_main
-            registry: dev_main
-        tagging: always_latest
-        platforms: ['linux/amd64']
+      registry:
+        type: aws
+        aws:
+          iam: dev_main
+          repository: dev_main
+      tagging: always_latest
+      platforms:
+        - linux/amd64
   dev_pr:
     on:
       pull_request:
+    type: docker_build
     config:
-      loader: docker_build
-      docker_build:
-        environment:
-          type: aws
-          aws:
-            identity: dev_main
-            registry: dev_main
-        tagging: always_latest
-        platforms: ['linux/amd64']
+      registry:
+        type: aws
+        aws:
+          iam: dev_main
+          repository: dev_main
+      tagging: always_latest
+      platforms:
+        - linux/amd64
