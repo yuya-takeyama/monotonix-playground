@@ -45,12 +45,6 @@ jobs:
           echo "$JOB_PARAMS"
         env:
           JOB_PARAMS: ${{ steps.job-params.outputs.result }}
-      - id: job-params
-        uses: yuya-takeyama/monotonix/actions/generate-docker-build-job-params@init
-        with:
-          job-configs: ${{ steps.job-configs.outputs.result }}
-          global-config-file-path: apps/monotonix-global.yaml
-          datetime-tag-timezone: Asia/Tokyo
       - uses: yuya-takeyama/monotonix/actions/store-dynamodb-state@init
         with:
           dynamodb-table: monotonix-state
