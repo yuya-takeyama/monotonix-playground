@@ -19,7 +19,7 @@ jobs:
       contents: read
       id-token: write
     outputs:
-      build-params: ${{ steps.job-params.outputs.result }}
+      job-params: ${{ steps.job-params.outputs.result }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -61,33 +61,54 @@ jobs:
   build:
     # name: ${{ matrix.build-params.label }}
     needs: setup
-    if: ${{ needs.setup.outputs.build-params != '[]' }}
+    if: ${{ needs.setup.outputs.job-params != '[]' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
     strategy:
       matrix:
-        job-params: ${{ fromJSON(needs.setup.outputs.build-params) }}
+        job-param: ${{ fromJSON(needs.setup.outputs.job-params) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - run: |
-          echo "$BUILD_PARAMS"
+          echo "$JOB_PARAMS"
         env:
-          BUILD_PARAMS: ${{ toJSON(matrix.job-params) }}
+          JOB_PARAMS: ${{ toJSON(matrix.job-param) }}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
-          role-to-assume: ${{ matrix.job-params.param.registry.aws.iam.role }}
-          aws-region: ${{ matrix.job-params.param.registry.aws.iam.region }}
+          role-to-assume: ${{ matrix.job-param.param.registry.aws.iam.role }}
+          aws-region: ${{ matrix.job-param.param.registry.aws.iam.region }}
       - id: login-ecr
         uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
         with:
-          registry-type: ${{ matrix.job-params.param.registry.aws.repository.type }}
+          registry-type: ${{ matrix.job-param.param.registry.aws.repository.type }}
       - uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
       - uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6.9.0
         with:
-          context: ${{ matrix.job-params.param.context }}
+          context: ${{ matrix.job-param.param.context }}
           push: true
-          tags: ${{ matrix.job-params.param.tags }}
-          platforms: ${{ matrix.job-params.param.platforms }}
+          tags: ${{ matrix.job-param.param.tags }}
+          platforms: ${{ matrix.job-param.param.platforms }}
+
+      - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        if: always()
+        with:
+          role-to-assume: arn:aws:iam::943566097936:role/monotonix-state-read-writer
+          aws-region: ap-northeast-1
+      - uses: yuya-takeyama/monotonix/actions/store-dynamodb-state@init
+        with:
+          dynamodb-table: monotonix-state
+          dynamodb-region: ap-northeast-1
+          status: 'success'
+          job-params: ${{ matrix.job-param }}
+          ttl-in-days: 180
+      - uses: yuya-takeyama/monotonix/actions/store-dynamodb-state@init
+        if: failure()
+        with:
+          dynamodb-table: monotonix-state
+          dynamodb-region: ap-northeast-1
+          status: 'failure'
+          job-params: ${{ matrix.job-param }}
+          ttl-in-hours: 1
