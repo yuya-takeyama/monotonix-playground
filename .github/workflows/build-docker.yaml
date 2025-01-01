@@ -28,24 +28,12 @@ jobs:
         uses: yuya-takeyama/monotonix/actions/load-job-configs@init
         with:
           root-dir: apps
-      - run: |
-          echo "$GITHUB_CONTEXT"
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-      - run: |
-          echo "$JOB_CONFIGS"
-        env:
-          JOB_CONFIGS: ${{ steps.job-configs.outputs.result }}
       - id: job-params
         uses: yuya-takeyama/monotonix/actions/generate-docker-build-job-params@init
         with:
           job-configs: ${{ steps.job-configs.outputs.result }}
           global-config-file-path: apps/monotonix-global.yaml
           datetime-tag-timezone: Asia/Tokyo
-      - run: |
-          echo "$JOB_PARAMS"
-        env:
-          JOB_PARAMS: ${{ steps.job-params.outputs.result }}
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
           role-to-assume: arn:aws:iam::943566097936:role/monotonix-state-read-writer
@@ -56,10 +44,6 @@ jobs:
           job-params: ${{ steps.job-params.outputs.result }}
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
-      - run: |
-          echo "$FILTERED_JOB_PARAMS"
-        env:
-          FILTERED_JOB_PARAMS: ${{ steps.filtered-job-params.outputs.result }}
       - uses: yuya-takeyama/monotonix/actions/store-dynamodb-state@init
         with:
           job-params: ${{ steps.job-params.outputs.result }}
@@ -80,11 +64,6 @@ jobs:
       matrix:
         job-param: ${{ fromJSON(needs.setup.outputs.job-params) }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - run: |
-          echo "$JOB_PARAMS"
-        env:
-          JOB_PARAMS: ${{ toJSON(matrix.job-param) }}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
