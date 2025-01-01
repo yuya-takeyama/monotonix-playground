@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
       - id: job-configs
-        uses: yuya-takeyama/monotonix/actions/load-job-configs@init
+        uses: yuya-takeyama/monotonix/actions/load-job-params-from-config-files@init
         with:
           root-dir: apps
       - id: job-params
