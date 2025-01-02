@@ -22,7 +22,6 @@ jobs:
   dev_pr:
     on:
       pull_request:
-    type: docker_build
     configs:
       docker_build:
         registry:
