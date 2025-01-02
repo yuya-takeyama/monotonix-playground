@@ -24,11 +24,13 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-      - uses: yuya-takeyama/monotonix/actions/load-job-params-from-config-files@init
+      - id: job-params
+        uses: yuya-takeyama/monotonix/actions/load-job-params-from-config-files@init
         with:
           root-dir: apps
       - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@init
         with:
+          job-params: ${{ steps.job-params.outputs.result }}
           global-config-file-path: apps/monotonix-global.yaml
           datetime-tag-timezone: Asia/Tokyo
       - uses: yuya-takeyama/monotonix/actions/load-generic-job-params@init
