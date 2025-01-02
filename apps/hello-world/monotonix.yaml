@@ -20,6 +20,7 @@ jobs:
         foo: FOO
         bar: BAR
         baz: BAZ
+        hoge: FUGA
   dev_pr:
     on:
       pull_request:
