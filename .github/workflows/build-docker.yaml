@@ -19,7 +19,7 @@ jobs:
       contents: read
       id-token: write
     outputs:
-      job-params: ${{ env.MONOTONIC_JOB_PARAMS }}
+      job-params: ${{ env.MONOTONIX_JOB_PARAMS }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -41,7 +41,7 @@ jobs:
           dynamodb-region: ap-northeast-1
       - uses: yuya-takeyama/monotonix/actions/store-dynamodb-state@init
         with:
-          job-params: ${{ env.MONOTONIC_JOB_PARAMS }}
+          job-params: ${{ env.MONOTONIX_JOB_PARAMS }}
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
           status: 'running'
