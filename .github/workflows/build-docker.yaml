@@ -19,7 +19,7 @@ jobs:
       contents: read
       id-token: write
     outputs:
-      job-params: ${{ env.MONOTONIX_JOB_PARAMS }}
+      job-params: ${{ steps.filtered-job-params.outputs.result }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -38,7 +38,8 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::943566097936:role/monotonix-state-read-writer
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/filter-job-params-by-dynamodb-state@init
+      - id: filtered-job-params
+        uses: yuya-takeyama/monotonix/actions/filter-job-params-by-dynamodb-state@init
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
