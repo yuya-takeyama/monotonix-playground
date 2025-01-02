@@ -86,7 +86,7 @@ jobs:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
           status: 'success'
-          jobs: ${{ matrix.job }}
+          jobs: ${{ toJSON(matrix.job) }}
           ttl-in-days: 180
       - uses: yuya-takeyama/monotonix/actions/store-dynamodb-state@init
         if: failure()
@@ -94,5 +94,5 @@ jobs:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
           status: 'failure'
-          jobs: ${{ matrix.job }}
+          jobs: ${{ toJSON(matrix.job) }}
           ttl-in-hours: 1
