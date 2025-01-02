@@ -27,10 +27,16 @@ jobs:
       - uses: yuya-takeyama/monotonix/actions/load-job-params-from-config-files@init
         with:
           root-dir: apps
+
+      - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          role-to-assume: arn:aws:iam::943566097936:role/monotonix-state-read-writer
+          aws-region: ap-northeast-1
       - uses: yuya-takeyama/monotonix/actions/filter-job-params-by-dynamodb-state@init
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
+
       - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@init
         with:
           job-params: ${{ steps.job-params.outputs.result }}
@@ -39,10 +45,6 @@ jobs:
       - uses: yuya-takeyama/monotonix/actions/load-generic-job-params@init
         with:
           config-key: generic_foo
-      - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
-        with:
-          role-to-assume: arn:aws:iam::943566097936:role/monotonix-state-read-writer
-          aws-region: ap-northeast-1
       - uses: yuya-takeyama/monotonix/actions/store-dynamodb-state@init
         with:
           job-params: ${{ env.MONOTONIX_JOB_PARAMS }}
