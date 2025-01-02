@@ -49,7 +49,7 @@ jobs:
           ttl-in-hours: 1
 
   build:
-    name: ${{ matrix.job-param.app_context.label }}
+    name: ${{ matrix.job.app_context.label }}
     needs: setup
     if: ${{ needs.setup.outputs.jobs != '[]' }}
     runs-on: ubuntu-latest
