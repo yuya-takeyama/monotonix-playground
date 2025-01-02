@@ -19,7 +19,6 @@ jobs:
       generic_foo:
         foo: FOO
         bar: BAR
-        baz: BAZ
   dev_pr:
     on:
       pull_request:
