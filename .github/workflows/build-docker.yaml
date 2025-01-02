@@ -76,23 +76,16 @@ jobs:
           tags: ${{ matrix.job.params.docker_build.tags }}
           platforms: ${{ matrix.job.params.docker_build.platforms }}
 
-      #- uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
-      #  if: always()
-      #  with:
-      #    role-to-assume: arn:aws:iam::943566097936:role/monotonix-state-read-writer
-      #    aws-region: ap-northeast-1
-      #- uses: yuya-takeyama/monotonix/actions/store-dynamodb-state@init
-      #  with:
-      #    dynamodb-table: monotonix-state
-      #    dynamodb-region: ap-northeast-1
-      #    status: 'success'
-      #    jobs: ${{ toJSON(matrix.job) }}
-      #    ttl-in-days: 180
-      #- uses: yuya-takeyama/monotonix/actions/store-dynamodb-state@init
-      #  if: failure()
-      #  with:
-      #   dynamodb-table: monotonix-state
-      #    dynamodb-region: ap-northeast-1
-      #    status: 'failure'
-      #    jobs: ${{ toJSON(matrix.job) }}
-      #    ttl-in-hours: 1
+      - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        if: always()
+        with:
+          role-to-assume: arn:aws:iam::943566097936:role/monotonix-state-read-writer
+          aws-region: ap-northeast-1
+      - uses: yuya-takeyama/monotonix/actions/update-dynamodb-state@init
+        if: always()
+        with:
+          dynamodb-table: monotonix-state
+          dynamodb-region: ap-northeast-1
+          job: ${{ toJSON(matrix.job) }}
+          status: ${{ job.status }}
+          ttl-in-days: 180
