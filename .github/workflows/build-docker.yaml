@@ -45,9 +45,11 @@ jobs:
         with:
           global-config-file-path: apps/monotonix-global.yaml
           datetime-tag-timezone: Asia/Tokyo
+      - run: |
+          echo "$MONOTONIX_JOBS"
 
   build:
-    name: ${{ matrix.job.app_context.label }}
+    name: ${{ matrix.job.context.label }}
     needs: setup
     if: ${{ needs.setup.outputs.jobs != '[]' }}
     runs-on: ubuntu-latest
