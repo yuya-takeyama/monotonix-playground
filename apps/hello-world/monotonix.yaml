@@ -16,6 +16,10 @@ jobs:
         tagging: always_latest
         platforms:
           - linux/amd64
+      generic_foo:
+        foo: FOO
+        bar: BAR
+        baz: BAZ
   dev_pr:
     on:
       pull_request:

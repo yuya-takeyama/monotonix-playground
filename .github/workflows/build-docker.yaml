@@ -31,6 +31,9 @@ jobs:
         with:
           global-config-file-path: apps/monotonix-global.yaml
           datetime-tag-timezone: Asia/Tokyo
+      - uses: yuya-takeyama/monotonix/actions/load-generic-job-params@init
+        with:
+          config-key: generic_foo
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
           role-to-assume: arn:aws:iam::943566097936:role/monotonix-state-read-writer
