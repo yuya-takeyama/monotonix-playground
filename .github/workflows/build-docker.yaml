@@ -27,7 +27,7 @@ jobs:
       - uses: yuya-takeyama/monotonix/actions/load-job-params-from-config-files@init
         with:
           root-dir: apps
-      - uses: yuya-takeyama/monotonix/actions/generate-docker-build-job-params@init
+      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@init
         with:
           global-config-file-path: apps/monotonix-global.yaml
           datetime-tag-timezone: Asia/Tokyo
