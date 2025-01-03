@@ -1,7 +1,7 @@
 app:
   name: hello-world
 jobs:
-  dev_main:
+  build_dev_main:
     on:
       push:
         branches:
@@ -19,7 +19,7 @@ jobs:
       generic_foo:
         foo: FOO
         bar: BAR
-  dev_pr:
+  build_dev_pr:
     on:
       pull_request:
     configs:
@@ -27,8 +27,8 @@ jobs:
         registry:
           type: aws
           aws:
-            iam: dev_main
-            repository: dev_main
+            iam: dev_pr
+            repository: dev_pr
         tagging: always_latest
         platforms:
           - linux/amd64
