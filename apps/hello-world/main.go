@@ -10,7 +10,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello, World!")
 }
 
-// Update 16
+// Update 17
 func main() {
 	http.HandleFunc("/", helloHandler)
 	log.Println("Starting server on :8080")
