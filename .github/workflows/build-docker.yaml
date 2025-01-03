@@ -88,4 +88,3 @@ jobs:
       #    push: true
       #    tags: ${{ matrix.job.params.docker_build.tags }}
       #    platforms: ${{ matrix.job.params.docker_build.platforms }}
-      - run: exit 1
