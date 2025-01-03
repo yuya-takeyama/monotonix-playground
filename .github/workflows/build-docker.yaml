@@ -72,7 +72,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MONOTONIX_GITHUB_JOB_CONTEXT: ${{ toJSON(job) }}
-          MONOTONIX_GITHUB_JOBS_CONTEXT: JOBS
           MONOTONIX_GITHUB_STEP_CONTEXT: ${{ toJSON(steps) }}
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
