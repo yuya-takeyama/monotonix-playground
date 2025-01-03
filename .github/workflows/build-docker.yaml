@@ -28,6 +28,8 @@ jobs:
         with:
           root-dir: apps
           required-config-keys: 'docker_build'
+      - if: ${{ github.event_name == 'pull_request' }}
+        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@init
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
           role-to-assume: arn:aws:iam::943566097936:role/monotonix-state-read-writer
