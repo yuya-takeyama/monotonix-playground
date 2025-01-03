@@ -61,7 +61,10 @@ jobs:
       matrix:
         job: ${{ fromJSON(needs.setup.outputs.jobs) }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          role-to-assume: arn:aws:iam::943566097936:role/monotonix-state-read-writer
+          aws-region: ap-northeast-1
       - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@init
         with:
           dynamodb-table: monotonix-state
@@ -70,6 +73,8 @@ jobs:
           job-status: ${{ job.status }}
           success-ttl: '180d'
           running-ttl: '1h'
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
           role-to-assume: ${{ matrix.job.params.docker_build.registry.aws.iam.role }}
