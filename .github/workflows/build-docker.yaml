@@ -29,9 +29,7 @@ jobs:
           fetch-depth: 0
       - uses: yuya-takeyama/monotonix/actions/load-jobs@init
         with:
-          workflow-id: docker_build
           root-dir: apps
-
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
           role-to-assume: arn:aws:iam::943566097936:role/monotonix-state-read-writer
@@ -40,13 +38,10 @@ jobs:
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
-
       - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@init
         with:
           global-config-file-path: apps/monotonix-global.yaml
           datetime-tag-timezone: Asia/Tokyo
-      - run: |
-          echo "$MONOTONIX_JOBS"
 
   build:
     name: ${{ matrix.job.context.label }}
