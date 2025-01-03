@@ -29,6 +29,6 @@ jobs:
           aws:
             iam: dev_pr
             repository: dev_pr
-        tagging: always_latest
+        tagging: pull_request
         platforms:
           - linux/amd64
