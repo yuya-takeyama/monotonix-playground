@@ -63,17 +63,13 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@init
-        if: always()
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
           job: ${{ toJSON(matrix.job) }}
           job-status: ${{ job.status }}
-          ttl-in-days: 180
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MONOTONIX_GITHUB_JOB_CONTEXT: ${{ toJSON(job) }}
-          MONOTONIX_GITHUB_STEP_CONTEXT: ${{ toJSON(steps) }}
+          success-ttl: '180d'
+          running-ttl: '1h'
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
           role-to-assume: ${{ matrix.job.params.docker_build.registry.aws.iam.role }}
