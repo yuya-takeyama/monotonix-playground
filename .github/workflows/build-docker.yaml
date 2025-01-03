@@ -12,9 +12,6 @@ on:
       - .github/workflows/build-docker.yaml
       - apps/**
 
-env:
-  MONOTONIX_WORKFLOW_ID: docker_build
-
 jobs:
   setup:
     runs-on: ubuntu-latest
