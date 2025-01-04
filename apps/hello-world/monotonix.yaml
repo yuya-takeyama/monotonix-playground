@@ -21,7 +21,7 @@ jobs:
         bar: BAR
   build_dev_pr:
     on:
-      pull_request:
+      pull_request_target:
     configs:
       docker_build:
         registry:
