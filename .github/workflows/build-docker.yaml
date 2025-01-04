@@ -10,7 +10,7 @@ on:
       - apps/**
 
 env:
-  CHECKOUT_REF: ${{ github.event.pull_request.head.ref }}
+  CHECKOUT_REF: ${{ github.event.pull_request.head.sha }}
 
 jobs:
   setup:
