@@ -9,6 +9,9 @@ on:
       - .github/workflows/build-docker.yaml
       - apps/**
 
+env:
+  CHECKOUT_REF: ${{ github.event.pull_request.head.ref }}
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -23,6 +26,7 @@ jobs:
           CONTEXT: ${{ toJSON(github) }}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
+          ref: ${{ env.CHECKOUT_REF }}
           fetch-depth: 0
       - uses: yuya-takeyama/monotonix/actions/load-jobs@init
         with:
@@ -69,6 +73,8 @@ jobs:
           success-ttl: '180d'
           running-ttl: '1h'
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ env.CHECKOUT_REF }}
 
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
