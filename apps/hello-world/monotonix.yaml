@@ -1,6 +1,21 @@
 app:
   name: hello-world
 jobs:
+  build_pr:
+    on:
+      push:
+        branches:
+          - main
+    configs:
+      docker_build:
+        registry:
+          type: aws
+          aws:
+            iam: prd
+            repository: prd
+        tagging: semver_datetime
+        platforms:
+          - linux/amd64
   build_dev_main:
     on:
       push:
@@ -16,9 +31,6 @@ jobs:
         tagging: always_latest
         platforms:
           - linux/amd64
-      generic_foo:
-        foo: FOO
-        bar: BAR
   build_dev_pr:
     on:
       pull_request_target:

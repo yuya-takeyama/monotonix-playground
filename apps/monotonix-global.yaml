@@ -3,16 +3,22 @@ job_types:
     registries:
       aws:
         iams:
+          prd:
+            role: arn:aws:iam::920373013500:role/monotonix-builder
+            region: ap-northeast-1
           dev_main:
-            role: arn:aws:iam::943566097936:role/monotonix-builder-main
+            role: arn:aws:iam::615299752259:role/monotonix-builder-main
             region: ap-northeast-1
           dev_pr:
-            role: arn:aws:iam::943566097936:role/monotonix-builder-pr
+            role: arn:aws:iam::615299752259:role/monotonix-builder-pr
             region: ap-northeast-1
         repositories:
+          prd:
+            type: private
+            base_url: 920373013500.dkr.ecr.ap-northeast-1.amazonaws.com/monotonix
           dev_main:
             type: private
-            base_url: 943566097936.dkr.ecr.ap-northeast-1.amazonaws.com/monotonix-playground/apps
+            base_url: 615299752259.dkr.ecr.ap-northeast-1.amazonaws.com/monotonix
           dev_pr:
             type: private
-            base_url: 943566097936.dkr.ecr.ap-northeast-1.amazonaws.com/monotonix-playground/apps-pr
+            base_url: 615299752259.dkr.ecr.ap-northeast-1.amazonaws.com/monotonix-pr
