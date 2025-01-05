@@ -23,6 +23,7 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Update
 func main() {
 	http.HandleFunc("/", echoHandler)
 	log.Println("Starting echo server on :8080")
