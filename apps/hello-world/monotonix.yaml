@@ -1,7 +1,7 @@
 app:
   name: hello-world
 jobs:
-  build_pr:
+  build_prd:
     on:
       push:
         branches:

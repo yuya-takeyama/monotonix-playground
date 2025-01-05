@@ -1,7 +1,7 @@
 app:
   name: echo
 jobs:
-  build_pr:
+  build_prd:
     on:
       push:
         branches:
