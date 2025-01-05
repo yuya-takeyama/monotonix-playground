@@ -1,0 +1,46 @@
+app:
+  name: echo
+jobs:
+  build_pr:
+    on:
+      push:
+        branches:
+          - main
+    configs:
+      docker_build:
+        registry:
+          type: aws
+          aws:
+            iam: prd
+            repository: prd
+        tagging: semver_datetime
+        platforms:
+          - linux/amd64
+  build_dev_main:
+    on:
+      push:
+        branches:
+          - main
+    configs:
+      docker_build:
+        registry:
+          type: aws
+          aws:
+            iam: dev_main
+            repository: dev_main
+        tagging: always_latest
+        platforms:
+          - linux/amd64
+  build_dev_pr:
+    on:
+      pull_request_target:
+    configs:
+      docker_build:
+        registry:
+          type: aws
+          aws:
+            iam: dev_pr
+            repository: dev_pr
+        tagging: pull_request
+        platforms:
+          - linux/amd64
