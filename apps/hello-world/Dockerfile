@@ -7,7 +7,7 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main
 
-FROM gcr.io/distroless/static-debian11
+FROM gcr.io/distroless/static-debian12:latest
 
 COPY --from=builder /app/main /
 EXPOSE 8080
