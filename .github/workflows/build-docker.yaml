@@ -39,7 +39,7 @@ jobs:
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@main
+      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@4c03ec62c388957c6b5d7ba96694cdc24157aa57 # v0.0.0
         with:
           global-config-file-path: apps/monotonix-global.yaml
           timezone: Asia/Tokyo
