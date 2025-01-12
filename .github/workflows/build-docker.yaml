@@ -70,6 +70,7 @@ jobs:
         with:
           ref: ${{ env.CHECKOUT_REF }}
 
+      - run: exit 1
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
           role-to-assume: ${{ matrix.job.params.docker_build.registry.aws.iam.role }}
