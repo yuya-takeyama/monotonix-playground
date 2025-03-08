@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-      - uses: yuya-takeyama/monotonix/actions/load-jobs@87edd231798be84838a51046ff80902aaad6a54f # v0.0.1
+      - uses: yuya-takeyama/monotonix/actions/load-jobs@fix-required-config-keys
         with:
           root-dir: apps
           required-config-keys: 'go_test'
