@@ -44,3 +44,11 @@ jobs:
         tagging: pull_request
         platforms:
           - linux/amd64
+  go_test:
+    on:
+      pull_request:
+      push:
+        branches:
+          - main
+    configs:
+      go_test:
