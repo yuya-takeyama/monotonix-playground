@@ -78,7 +78,7 @@ jobs:
         with:
           registry-type: ${{ matrix.job.params.docker_build.registry.aws.repository.type }}
       - uses: docker/setup-buildx-action@18ce135bb5112fa8ce4ed6c17ab05699d7f3a5e0 # v3.11.0
-      - uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
+      - uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
           context: ${{ matrix.job.params.docker_build.context }}
           push: true
