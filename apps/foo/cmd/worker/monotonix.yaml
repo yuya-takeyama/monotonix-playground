@@ -1,5 +1,5 @@
 app:
-  name: worker
+  name: foo/cmd/worker
   depends_on:
     - foo
 jobs:
