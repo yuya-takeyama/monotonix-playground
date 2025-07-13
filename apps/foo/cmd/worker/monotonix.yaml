@@ -9,10 +9,7 @@ jobs:
         branches:
           - main
     configs:
-      docker_build_go_build:
-        go_version_file: apps/foo/go.mod
-        build_command: "go build -o worker ./cmd/worker"
-        binary_path: "worker"
+      docker_build:
         registry:
           type: aws
           aws:
@@ -21,16 +18,15 @@ jobs:
         tagging: semver_datetime
         platforms:
           - linux/amd64
+      docker_build_go_build:
+        go_version_file: apps/foo/go.mod
   build_dev_main:
     on:
       push:
         branches:
           - main
     configs:
-      docker_build_go_build:
-        go_version_file: apps/foo/go.mod
-        build_command: "go build -o worker ./cmd/worker"
-        binary_path: "worker"
+      docker_build:
         registry:
           type: aws
           aws:
@@ -39,14 +35,13 @@ jobs:
         tagging: always_latest
         platforms:
           - linux/amd64
+      docker_build_go_build:
+        go_version_file: apps/foo/go.mod
   build_dev_pr:
     on:
       pull_request_target:
     configs:
-      docker_build_go_build:
-        go_version_file: apps/foo/go.mod
-        build_command: "go build -o worker ./cmd/worker"
-        binary_path: "worker"
+      docker_build:
         registry:
           type: aws
           aws:
@@ -55,6 +50,8 @@ jobs:
         tagging: pull_request
         platforms:
           - linux/amd64
+      docker_build_go_build:
+        go_version_file: apps/foo/go.mod
   go_test:
     on:
       pull_request:
