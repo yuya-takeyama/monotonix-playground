@@ -1,0 +1,68 @@
+app:
+  name: api-server
+  depends_on:
+    - pkg/config
+    - pkg/database
+    - pkg/logger
+    - internal/service
+jobs:
+  build_prd:
+    on:
+      push:
+        branches:
+          - main
+    configs:
+      docker_build_go_build:
+        go_version_file: apps/foo/go.mod
+        build_command: "go build -o api-server ./cmd/api-server"
+        binary_path: "api-server"
+        registry:
+          type: aws
+          aws:
+            iam: prd
+            repository: prd
+        tagging: semver_datetime
+        platforms:
+          - linux/amd64
+  build_dev_main:
+    on:
+      push:
+        branches:
+          - main
+    configs:
+      docker_build_go_build:
+        go_version_file: apps/foo/go.mod
+        build_command: "go build -o api-server ./cmd/api-server"
+        binary_path: "api-server"
+        registry:
+          type: aws
+          aws:
+            iam: dev_main
+            repository: dev_main
+        tagging: always_latest
+        platforms:
+          - linux/amd64
+  build_dev_pr:
+    on:
+      pull_request_target:
+    configs:
+      docker_build_go_build:
+        go_version_file: apps/foo/go.mod
+        build_command: "go build -o api-server ./cmd/api-server"
+        binary_path: "api-server"
+        registry:
+          type: aws
+          aws:
+            iam: dev_pr
+            repository: dev_pr
+        tagging: pull_request
+        platforms:
+          - linux/amd64
+  go_test:
+    on:
+      pull_request:
+      push:
+        branches:
+          - main
+    configs:
+      go_test:

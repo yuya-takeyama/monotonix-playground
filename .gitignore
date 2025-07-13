@@ -20,3 +20,5 @@ Thumbs.db
 # Go binaries
 apps/echo/echo
 apps/hello-world/hello-world
+apps/foo/api-server
+apps/foo/worker
