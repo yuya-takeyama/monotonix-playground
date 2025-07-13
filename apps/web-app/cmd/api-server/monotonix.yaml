@@ -3,7 +3,6 @@ app:
   depends_on:
     - web-app/pkg
     - web-app/go.mod
-    - web-app/go.sum
 jobs:
   build_prd:
     on:
