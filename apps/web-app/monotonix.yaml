@@ -9,3 +9,5 @@ jobs:
           - main
     configs:
       go_test:
+        go_version_file: apps/web-app/go.mod
+        cache_dependency_path: apps/web-app/go.sum

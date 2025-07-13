@@ -52,3 +52,5 @@ jobs:
           - main
     configs:
       go_test:
+        go_version_file: apps/hello-world/go.mod
+        cache_dependency_path: apps/hello-world/go.sum
