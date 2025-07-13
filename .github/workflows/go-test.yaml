@@ -21,17 +21,19 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-      - uses: yuya-takeyama/monotonix/actions/load-jobs@add-depends-on
+      - uses: yuya-takeyama/monotonix/actions/load-jobs@main
         with:
           root-dir: apps
           required-config-keys: 'go_test'
       - if: ${{ github.event_name == 'pull_request' }}
-        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@add-depends-on
+        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@main
+        with:
+          root-dir: apps
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@add-depends-on
+      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@main
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
@@ -53,7 +55,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@add-depends-on
+      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@main
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
