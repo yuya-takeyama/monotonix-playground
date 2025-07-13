@@ -9,7 +9,6 @@ on:
       - .github/workflows/build-docker.yaml
       - apps/**
 
-
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -90,7 +89,7 @@ jobs:
           go build -o main
         env:
           APP_PATH: ${{ matrix.job.params.docker_build.context }}
-          CGO_ENABLED: "0"
+          CGO_ENABLED: '0'
           GOOS: linux
           GOARCH: amd64
 
