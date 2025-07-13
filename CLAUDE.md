@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a playground/demonstration repository for Monotonix, a CI/CD tool for monorepos. The repository contains two simple Go applications (`echo` and `hello-world`) that showcase Monotonix's capabilities for building, testing, and deploying applications in a monorepo structure.
 
+**Primary Purpose**: This repository is primarily used for testing and experimenting with Monotonix features. The services here have no business value and are purely for testing purposes.
+
 ## Repository Structure
 
 ```
@@ -95,6 +97,15 @@ When making changes to an app:
 1. The Monotonix system automatically detects which apps have changed
 2. Only the changed apps will be built and deployed
 3. Jobs are triggered based on the configuration in each app's `monotonix.yaml`
+
+## Testing Monotonix New Features
+
+When testing new Monotonix features:
+
+1. **Prioritize feature testing over stability** - This is a test environment, so breaking existing services is acceptable
+2. **Be experimental** - Try edge cases and unusual configurations to thoroughly test new capabilities
+3. **Document findings** - Note any unexpected behaviors or issues discovered during testing
+4. **Use aggressive testing approaches** - Don't hesitate to make breaking changes if it helps validate Monotonix functionality
 
 ## Adding a New Application
 
