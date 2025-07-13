@@ -1,2 +1,4 @@
 github.com/yuya-takeyama/monotonix-playground/apps/pkg/common v0.0.0-20250713041617-841204e80427 h1:Jx6oKi08qltVyLLNtlVkn+CcbCOXodQ9LHkydkbjcaE=
 github.com/yuya-takeyama/monotonix-playground/apps/pkg/common v0.0.0-20250713041617-841204e80427/go.mod h1:2y45jZ0oBd58jvVe+kbDgfsBlXExzxpb7LRWN8cJ00A=
+github.com/yuya-takeyama/monotonix-playground/apps/pkg/common v0.0.0-20250713042329-f8fe2805b940 h1:KUrW+7U1h1i5YuGDzXfUGkkZfrIS8TxOp077bswAQcc=
+github.com/yuya-takeyama/monotonix-playground/apps/pkg/common v0.0.0-20250713042329-f8fe2805b940/go.mod h1:2y45jZ0oBd58jvVe+kbDgfsBlXExzxpb7LRWN8cJ00A=
