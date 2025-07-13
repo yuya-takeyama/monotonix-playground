@@ -21,23 +21,23 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-      - uses: yuya-takeyama/monotonix/actions/load-jobs@v0.0.3
+      - uses: yuya-takeyama/monotonix/actions/load-jobs@d353007a9b7a33a360fae79e5b558daded5aade2 # v0.0.3
         with:
           root-dir: apps
           required-config-keys: 'docker_build'
       - if: ${{ github.event_name == 'pull_request' }}
-        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@v0.0.3
+        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@d353007a9b7a33a360fae79e5b558daded5aade2 # v0.0.3
         with:
           root-dir: apps
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@v0.0.3
+      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@d353007a9b7a33a360fae79e5b558daded5aade2 # v0.0.3
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@v0.0.3
+      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@d353007a9b7a33a360fae79e5b558daded5aade2 # v0.0.3
         with:
           global-config-file-path: apps/monotonix-global.yaml
           timezone: Asia/Tokyo
@@ -60,7 +60,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@v0.0.3
+      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@d353007a9b7a33a360fae79e5b558daded5aade2 # v0.0.3
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
