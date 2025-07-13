@@ -81,6 +81,7 @@ jobs:
         uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
         with:
           go-version-file: ${{ matrix.job.configs.docker_build_go_build.go_version_file }}
+          cache-dependency-path: ${{ matrix.job.configs.docker_build_go_build.cache_dependency_path }}
       - if: ${{ matrix.job.configs.docker_build_go_build }}
         name: Run Go Build for docker build
         run: |
