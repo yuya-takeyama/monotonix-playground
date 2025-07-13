@@ -39,7 +39,7 @@ func TestGetTimestampedMessage(t *testing.T) {
 }
 
 func TestGetVersion(t *testing.T) {
-	expected := "v1.0.0"
+	expected := "v1.1.0"
 	if got := GetVersion(); got != expected {
 		t.Errorf("GetVersion() = %v, want %v", got, expected)
 	}
