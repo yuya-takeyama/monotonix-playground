@@ -71,6 +71,19 @@ jobs:
         with:
           ref: ${{ env.CHECKOUT_REF }}
 
+      # Go build step for docker_build_go_build
+      - name: Setup Go
+        if: ${{ matrix.job.params.docker_build_go_build != null }}
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ matrix.job.params.docker_build_go_build.go_version_file }}
+
+      - name: Build Go binary
+        if: ${{ matrix.job.params.docker_build_go_build != null }}
+        run: |
+          cd "${{ matrix.job.context.app_path }}"
+          go build -o main .
+
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
           role-to-assume: ${{ matrix.job.params.docker_build.registry.aws.iam.role }}
