@@ -2,6 +2,8 @@ app:
   name: web-app/cmd/api-server
   depends_on:
     - web-app/pkg
+    - web-app/go.mod
+    - web-app/go.sum
 jobs:
   build_prd:
     on:
