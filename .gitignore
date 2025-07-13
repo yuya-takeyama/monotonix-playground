@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Claude settings
+**/.claude/settings.local.json
+
 # OS
 .DS_Store
 Thumbs.db
