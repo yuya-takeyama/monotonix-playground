@@ -54,9 +54,9 @@ jobs:
       id-token: write
       actions: read
     strategy:
-      fail-fast: false
       matrix:
         job: ${{ fromJSON(needs.setup.outputs.jobs) }}
+      fail-fast: false
     steps:
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
@@ -71,19 +71,6 @@ jobs:
         with:
           ref: ${{ env.CHECKOUT_REF }}
 
-      # Go build step for docker_build_go_build
-      - name: Setup Go
-        if: ${{ matrix.job.params.docker_build_go_build != null }}
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: ${{ matrix.job.params.docker_build_go_build.go_version_file }}
-
-      - name: Build Go binary
-        if: ${{ matrix.job.params.docker_build_go_build != null }}
-        run: |
-          cd "${{ matrix.job.context.app_path }}"
-          go build -o main .
-
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
           role-to-assume: ${{ matrix.job.params.docker_build.registry.aws.iam.role }}
@@ -92,9 +79,27 @@ jobs:
         with:
           registry-type: ${{ matrix.job.params.docker_build.registry.aws.repository.type }}
       - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+
+      # Go Build
+      - if: ${{ matrix.job.configs.docker_build_go_build }}
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version-file: ${{ matrix.job.configs.docker_build_go_build.go_version_file }}
+      - if: ${{ matrix.job.configs.docker_build_go_build }}
+        name: Run Go Build for docker build
+        run: |
+          cd "$APP_PATH"
+          go build -o main
+        env:
+          APP_PATH: ${{ matrix.job.params.docker_build.context }}
+          CGO_ENABLED: '0'
+          GOOS: linux
+          GOARCH: amd64
+
       - uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
           context: ${{ matrix.job.params.docker_build.context }}
           push: true
           tags: ${{ matrix.job.params.docker_build.tags }}
           platforms: ${{ matrix.job.params.docker_build.platforms }}
+          provenance: false # true だと Lambda で動かないため

@@ -1,5 +1,5 @@
 app:
-  name: api-server
+  name: foo/cmd/api-server
   depends_on:
     - foo
 jobs:
