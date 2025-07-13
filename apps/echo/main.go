@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/yuya-takeyama/monotonix-playground/apps/foo/pkg/common"
 )
 
 func echoHandler(w http.ResponseWriter, r *http.Request) {
@@ -27,12 +25,7 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/", echoHandler)
-	startupMsg := common.GetTimestampedMessage("ECHO", "Starting echo server on :8080")
-	versionMsg := common.GetTimestampedMessage("ECHO", fmt.Sprintf("Using common library version: %s", common.GetVersion()))
-	successMsg := common.FormatMessage("success", "Echo server initialized successfully!")
-	log.Println(startupMsg)
-	log.Println(versionMsg)
-	log.Println(successMsg)
+	log.Println("Starting echo server on :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
