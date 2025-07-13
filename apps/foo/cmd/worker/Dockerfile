@@ -1,5 +1,5 @@
 FROM gcr.io/distroless/static-debian12:nonroot
 
-COPY worker /
+COPY main /
 
-CMD ["/worker"]
+CMD ["/main"]

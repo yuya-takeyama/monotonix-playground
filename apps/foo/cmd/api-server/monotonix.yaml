@@ -52,11 +52,3 @@ jobs:
           - linux/amd64
       docker_build_go_build:
         go_version_file: apps/foo/go.mod
-  go_test:
-    on:
-      pull_request:
-      push:
-        branches:
-          - main
-    configs:
-      go_test:
