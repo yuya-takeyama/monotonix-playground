@@ -1,10 +1,7 @@
 app:
   name: api-server
   depends_on:
-    - pkg/config
-    - pkg/database
-    - pkg/logger
-    - internal/service
+    - foo
 jobs:
   build_prd:
     on:

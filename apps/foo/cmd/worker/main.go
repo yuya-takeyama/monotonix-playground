@@ -26,7 +26,7 @@ func main() {
 	// Simulate background processing
 	for {
 		log.Info("Processing background tasks...")
-		
+
 		// Example: Process some users
 		userIDs := []string{"user1", "user2", "user3"}
 		for _, userID := range userIDs {

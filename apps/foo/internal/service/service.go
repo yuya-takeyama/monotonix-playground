@@ -21,16 +21,16 @@ func NewUserService(db *database.Database, logger *logger.Logger) *UserService {
 
 func (s *UserService) GetUser(id string) (string, error) {
 	s.logger.Info(fmt.Sprintf("Getting user with ID: %s", id))
-	
+
 	results, err := s.db.Query(fmt.Sprintf("SELECT * FROM users WHERE id = '%s'", id))
 	if err != nil {
 		s.logger.Error(fmt.Sprintf("Failed to get user: %v", err))
 		return "", err
 	}
-	
+
 	if len(results) == 0 {
 		return "", fmt.Errorf("user not found")
 	}
-	
+
 	return fmt.Sprintf("User data: %s", results[0]), nil
 }
