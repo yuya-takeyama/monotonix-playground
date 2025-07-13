@@ -16,3 +16,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Go binaries
+apps/echo/echo
+apps/hello-world/hello-world
