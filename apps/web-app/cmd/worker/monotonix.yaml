@@ -41,7 +41,7 @@ jobs:
         go_version_file: apps/web-app/go.mod
   build_dev_pr:
     on:
-      pull_request_target:
+      pull_request:
     configs:
       docker_build:
         registry:

@@ -33,7 +33,7 @@ jobs:
           - linux/amd64
   build_dev_pr:
     on:
-      pull_request_target:
+      pull_request:
     configs:
       docker_build:
         registry:
