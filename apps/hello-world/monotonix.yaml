@@ -1,7 +1,7 @@
 app:
   name: hello-world
   depends_on:
-    - pkg/common
+    - foo/pkg/common
 jobs:
   build_prd:
     on:
