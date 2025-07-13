@@ -25,21 +25,23 @@ jobs:
         with:
           ref: ${{ env.CHECKOUT_REF }}
           fetch-depth: 0
-      - uses: yuya-takeyama/monotonix/actions/load-jobs@add-depends-on
+      - uses: yuya-takeyama/monotonix/actions/load-jobs@yuya-takeyama/feat/app-dependencies
         with:
           root-dir: apps
           required-config-keys: 'docker_build'
       - if: ${{ github.event_name == 'pull_request_target' }}
-        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@add-depends-on
+        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@yuya-takeyama/feat/app-dependencies
+        with:
+          root-dir: apps
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@add-depends-on
+      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@yuya-takeyama/feat/app-dependencies
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@add-depends-on
+      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@yuya-takeyama/feat/app-dependencies
         with:
           global-config-file-path: apps/monotonix-global.yaml
           timezone: Asia/Tokyo
@@ -62,7 +64,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@add-depends-on
+      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@yuya-takeyama/feat/app-dependencies
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
