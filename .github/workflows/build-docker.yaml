@@ -33,11 +33,11 @@ jobs:
         uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@add-claude-to-gitignore
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
-          role-to-assume: arn:aws:iam::317012797802:role/monotonix-prd-state-manager
+          role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
       - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@add-claude-to-gitignore
         with:
-          dynamodb-table: monotonix-prd-state
+          dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
       - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@add-claude-to-gitignore
         with:
@@ -60,11 +60,11 @@ jobs:
     steps:
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
-          role-to-assume: arn:aws:iam::317012797802:role/monotonix-prd-state-manager
+          role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
       - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@add-claude-to-gitignore
         with:
-          dynamodb-table: monotonix-prd-state
+          dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
           job: ${{ toJSON(matrix.job) }}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
