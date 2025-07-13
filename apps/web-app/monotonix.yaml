@@ -1,5 +1,5 @@
 app:
-  name: foo
+  name: web-app
 jobs:
   go_test:
     on:

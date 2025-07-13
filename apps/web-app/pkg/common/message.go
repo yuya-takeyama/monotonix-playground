@@ -2,8 +2,17 @@ package common
 
 import (
 	"fmt"
+	"os"
 	"time"
+
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
+
+func init() {
+	// Pretty console logging
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+}
 
 // GetTimestampedMessage returns a message with the current timestamp
 func GetTimestampedMessage(prefix string, message string) string {
@@ -29,4 +38,20 @@ func FormatMessage(level, message string) string {
 		emoji = "✅"
 	}
 	return fmt.Sprintf("%s %s", emoji, message)
+}
+
+// LogMessage logs a message using zerolog
+func LogMessage(level, message string) {
+	switch level {
+	case "info":
+		log.Info().Msg(message)
+	case "warn":
+		log.Warn().Msg(message)
+	case "error":
+		log.Error().Msg(message)
+	case "debug":
+		log.Debug().Msg(message)
+	default:
+		log.Info().Msg(message)
+	}
 }
