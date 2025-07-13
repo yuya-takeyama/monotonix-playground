@@ -1,5 +1,7 @@
 app:
-  name: echo
+  name: web-app/cmd/api-server
+  depends_on:
+    - web-app/pkg
 jobs:
   build_prd:
     on:
@@ -16,6 +18,8 @@ jobs:
         tagging: semver_datetime
         platforms:
           - linux/amd64
+      docker_build_go_build:
+        go_version_file: apps/web-app/go.mod
   build_dev_main:
     on:
       push:
@@ -31,6 +35,8 @@ jobs:
         tagging: always_latest
         platforms:
           - linux/amd64
+      docker_build_go_build:
+        go_version_file: apps/web-app/go.mod
   build_dev_pr:
     on:
       pull_request_target:
@@ -44,11 +50,5 @@ jobs:
         tagging: pull_request
         platforms:
           - linux/amd64
-  go_test:
-    on:
-      pull_request:
-      push:
-        branches:
-          - main
-    configs:
-      go_test:
+      docker_build_go_build:
+        go_version_file: apps/web-app/go.mod

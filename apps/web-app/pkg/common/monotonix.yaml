@@ -1,5 +1,5 @@
 app:
-  name: foo/pkg/common
+  name: web-app/pkg/common
 jobs:
   go_test:
     on:

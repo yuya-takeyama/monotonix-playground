@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a playground/demonstration repository for Monotonix, a CI/CD tool for monorepos. The repository contains two simple Go applications (`echo` and `hello-world`) that showcase Monotonix's capabilities for building, testing, and deploying applications in a monorepo structure.
+This is a playground/demonstration repository for Monotonix, a CI/CD tool for monorepos. The repository contains two Go applications (`hello-world` and `web-app`) that showcase Monotonix's capabilities for building, testing, and deploying applications in a monorepo structure.
 
 **Primary Purpose**: This repository is primarily used for testing and experimenting with Monotonix features. The services here have no business value and are purely for testing purposes.
 
@@ -14,16 +14,28 @@ This is a playground/demonstration repository for Monotonix, a CI/CD tool for mo
 monotonix-playground/
 ├── apps/
 │   ├── monotonix-global.yaml   # Global configuration for AWS IAM roles and ECR registries
-│   ├── echo/                   # Echo server application
+│   ├── hello-world/           # Simple Hello World application (no dependencies)
 │   │   ├── Dockerfile
 │   │   ├── go.mod
 │   │   ├── main.go
 │   │   └── monotonix.yaml     # App-specific Monotonix configuration
-│   └── hello-world/           # Hello World application
-│       ├── Dockerfile
+│   └── web-app/               # Web application with dependencies
+│       ├── cmd/
+│       │   ├── api-server/    # API server microservice
+│       │   │   ├── Dockerfile
+│       │   │   ├── main.go
+│       │   │   └── monotonix.yaml
+│       │   └── worker/        # Background worker microservice
+│       │       ├── Dockerfile
+│       │       ├── main.go
+│       │       └── monotonix.yaml
+│       ├── pkg/
+│       │   └── common/        # Shared library package
+│       │       ├── message.go
+│       │       ├── message_test.go
+│       │       └── monotonix.yaml
 │       ├── go.mod
-│       ├── main.go
-│       └── monotonix.yaml     # App-specific Monotonix configuration
+│       └── monotonix.yaml
 └── renovate.json              # Dependency update automation
 ```
 
@@ -32,36 +44,45 @@ monotonix-playground/
 ### Running Applications Locally
 
 ```bash
-# Run the echo server
-cd apps/echo
-go run main.go
-
 # Run the hello-world server
 cd apps/hello-world
+go run main.go
+
+# Run the web-app API server
+cd apps/web-app/cmd/api-server
+go run main.go
+
+# Run the web-app worker
+cd apps/web-app/cmd/worker
 go run main.go
 ```
 
 ### Testing
 
 ```bash
-# Run tests for a specific app (though no test files exist currently)
-cd apps/echo
+# Run tests for hello-world
+cd apps/hello-world
 go test ./...
 
-cd apps/hello-world
+# Run tests for web-app (includes common package tests)
+cd apps/web-app
 go test ./...
 ```
 
 ### Building Docker Images Locally
 
 ```bash
-# Build echo app
-cd apps/echo
-docker build -t echo:local .
-
 # Build hello-world app
 cd apps/hello-world
 docker build -t hello-world:local .
+
+# Build web-app API server
+cd apps/web-app/cmd/api-server
+docker build -t web-app-api-server:local .
+
+# Build web-app worker
+cd apps/web-app/cmd/worker
+docker build -t web-app-worker:local .
 ```
 
 ## Architecture & Key Concepts
@@ -72,10 +93,19 @@ Each app has a `monotonix.yaml` file that defines:
 
 - **Jobs**: Build and test workflows triggered by different events
 - **Environments**: prd (production), dev_main, and dev_pr
+- **Dependencies**: Some apps depend on shared packages (e.g., `web-app/cmd/api-server` and `web-app/cmd/worker` both depend on `web-app/pkg`)
 - **Tagging strategies**:
   - `semver_datetime`: For production builds
   - `always_latest`: For dev_main builds
   - `pull_request`: For PR builds
+
+### Application Types
+
+- **hello-world**: A simple standalone application with no dependencies, demonstrating basic Monotonix functionality
+- **web-app**: A more complex application showcasing dependency management:
+  - `web-app/pkg/common`: Shared library package
+  - `web-app/cmd/api-server`: API server microservice that depends on the common package
+  - `web-app/cmd/worker`: Background worker that depends on the common package
 
 ### Docker Build Process
 
