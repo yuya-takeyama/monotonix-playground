@@ -23,23 +23,23 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-      - uses: yuya-takeyama/monotonix/actions/load-jobs@28250d732ee703a83ba217401e1b575969e8967b # v0.0.2
+      - uses: yuya-takeyama/monotonix/actions/load-jobs@add-claude-to-gitignore
         with:
           root-dir: apps
           required-config-keys: docker_build
           dedupe-key: docker-build#${{ startsWith(github.event_name, 'pull_request') && format('pr/{0}', github.event.pull_request.number) || github.ref }}
 
       - if: ${{ github.event_name == 'pull_request' }}
-        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@28250d732ee703a83ba217401e1b575969e8967b # v0.0.2
+        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@add-claude-to-gitignore
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
           role-to-assume: arn:aws:iam::317012797802:role/monotonix-prd-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@28250d732ee703a83ba217401e1b575969e8967b # v0.0.2
+      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@add-claude-to-gitignore
         with:
           dynamodb-table: monotonix-prd-state
           dynamodb-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@28250d732ee703a83ba217401e1b575969e8967b # v0.0.2
+      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@add-claude-to-gitignore
         with:
           global-config-file-path: apps/monotonix-global.yaml
           timezone: Asia/Tokyo
@@ -62,7 +62,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::317012797802:role/monotonix-prd-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@28250d732ee703a83ba217401e1b575969e8967b # v0.0.2
+      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@add-claude-to-gitignore
         with:
           dynamodb-table: monotonix-prd-state
           dynamodb-region: ap-northeast-1
