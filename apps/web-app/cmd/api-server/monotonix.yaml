@@ -22,6 +22,7 @@ jobs:
           - linux/amd64
       docker_build_go_build:
         go_version_file: apps/web-app/go.mod
+        cache_dependency_path: apps/web-app/go.sum
   build_dev_main:
     on:
       push:
@@ -39,6 +40,7 @@ jobs:
           - linux/amd64
       docker_build_go_build:
         go_version_file: apps/web-app/go.mod
+        cache_dependency_path: apps/web-app/go.sum
   build_dev_pr:
     on:
       pull_request:
@@ -54,3 +56,4 @@ jobs:
           - linux/amd64
       docker_build_go_build:
         go_version_file: apps/web-app/go.mod
+        cache_dependency_path: apps/web-app/go.sum
