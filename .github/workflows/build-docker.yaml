@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  pull_request_target:
+  pull_request:
     paths:
       - .github/workflows/build-docker.yaml
       - apps/**
@@ -29,7 +29,7 @@ jobs:
         with:
           root-dir: apps
           required-config-keys: 'docker_build'
-      - if: ${{ github.event_name == 'pull_request_target' }}
+      - if: ${{ github.event_name == 'pull_request' }}
         uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@main
         with:
           root-dir: apps
