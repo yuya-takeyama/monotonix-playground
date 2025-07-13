@@ -73,13 +73,13 @@ jobs:
 
       # Go build step for docker_build_go_build
       - name: Setup Go
-        if: ${{ matrix.job.params.docker_build_go_build != null }}
+        if: ${{ matrix.job.configs.docker_build_go_build }}
         uses: actions/setup-go@v5
         with:
-          go-version-file: ${{ matrix.job.params.docker_build_go_build.go_version_file }}
+          go-version-file: ${{ matrix.job.configs.docker_build_go_build.go_version_file }}
 
       - name: Build Go binary
-        if: ${{ matrix.job.params.docker_build_go_build != null }}
+        if: ${{ matrix.job.configs.docker_build_go_build }}
         run: |
           cd "${{ matrix.job.context.app_path }}"
           go build -o main .
