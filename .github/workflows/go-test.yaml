@@ -45,6 +45,7 @@ jobs:
       contents: read
       id-token: write
     strategy:
+      fail-fast: false
       matrix:
         job: ${{ fromJSON(needs.setup.outputs.jobs) }}
     steps:
