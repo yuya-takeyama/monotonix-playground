@@ -1,7 +1,9 @@
 app:
-  name: foo/cmd/api-server
+  name: web-app/cmd/worker
   depends_on:
-    - foo
+    - web-app/pkg
+    - web-app/go.mod
+    - web-app/go.sum
 jobs:
   build_prd:
     on:
@@ -19,7 +21,7 @@ jobs:
         platforms:
           - linux/amd64
       docker_build_go_build:
-        go_version_file: apps/foo/go.mod
+        go_version_file: apps/web-app/go.mod
   build_dev_main:
     on:
       push:
@@ -36,7 +38,7 @@ jobs:
         platforms:
           - linux/amd64
       docker_build_go_build:
-        go_version_file: apps/foo/go.mod
+        go_version_file: apps/web-app/go.mod
   build_dev_pr:
     on:
       pull_request_target:
@@ -51,4 +53,4 @@ jobs:
         platforms:
           - linux/amd64
       docker_build_go_build:
-        go_version_file: apps/foo/go.mod
+        go_version_file: apps/web-app/go.mod

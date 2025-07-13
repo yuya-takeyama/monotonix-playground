@@ -4,5 +4,5 @@ This file is placed in a deeper directory structure to test if the apps/** patte
 correctly detects changes in nested directories.
 
 Timestamp: 2025-07-13
-Location: apps/foo/cmd/api-server/
-Update
+Location: apps/web-app/cmd/api-server/
+Update 2
