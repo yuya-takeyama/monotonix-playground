@@ -1,0 +1,11 @@
+app:
+  name: common
+jobs:
+  go_test:
+    on:
+      pull_request:
+      push:
+        branches:
+          - main
+    configs:
+      go_test:
