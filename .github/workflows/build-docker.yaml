@@ -4,10 +4,13 @@ on:
   push:
     branches:
       - main
-  pull_request:
+  pull_request_target:
     paths:
       - .github/workflows/build-docker.yaml
       - apps/**
+
+env:
+  CHECKOUT_REF: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
   setup:
@@ -15,20 +18,18 @@ jobs:
     permissions:
       contents: read
       id-token: write
-      pull-requests: read
     outputs:
       jobs: ${{ env.MONOTONIX_JOBS }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
+          ref: ${{ env.CHECKOUT_REF }}
           fetch-depth: 0
       - uses: yuya-takeyama/monotonix/actions/load-jobs@add-claude-to-gitignore
         with:
           root-dir: apps
-          required-config-keys: docker_build
-          dedupe-key: docker-build#${{ startsWith(github.event_name, 'pull_request') && format('pr/{0}', github.event.pull_request.number) || github.ref }}
-
-      - if: ${{ github.event_name == 'pull_request' }}
+          required-config-keys: 'docker_build'
+      - if: ${{ github.event_name == 'pull_request_target' }}
         uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@add-claude-to-gitignore
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
@@ -67,6 +68,8 @@ jobs:
           dynamodb-region: ap-northeast-1
           job: ${{ toJSON(matrix.job) }}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ env.CHECKOUT_REF }}
 
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
