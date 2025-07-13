@@ -4,3 +4,4 @@ Created for testing Monotonix workflow file change detection functionality.
 Timestamp: 2025-07-13
 Update
 Test dependency resolution debug
+Raw YAML analysis
