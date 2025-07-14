@@ -1,5 +1,3 @@
-app:
-  name: hello-world
 jobs:
   build_prd:
     on:
