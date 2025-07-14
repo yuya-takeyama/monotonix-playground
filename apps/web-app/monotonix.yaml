@@ -1,5 +1,3 @@
-app:
-  name: web-app
 jobs:
   go_test:
     on:

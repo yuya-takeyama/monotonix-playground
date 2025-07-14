@@ -7,7 +7,7 @@ import (
 )
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello, World! (Built with Monotonix v0.0.3)")
+	fmt.Fprintln(w, "Hello, World! (Built with Monotonix v0.0.4)")
 }
 
 func main() {
