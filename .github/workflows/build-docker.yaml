@@ -27,7 +27,6 @@ jobs:
           required-config-keys: 'docker_build'
       - if: ${{ github.event_name == 'pull_request' }}
         uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@yuya-takeyama/feat/simplify-action-parameters
-        # root-dir parameter removed
       - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
