@@ -27,7 +27,7 @@ jobs:
           required-config-keys: 'docker_build'
       - if: ${{ github.event_name == 'pull_request' }}
         uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@1ee58090547501c1b691407d21db1dee9374de7e # v0.0.4
-      - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
+      - uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4.3.1
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
@@ -54,7 +54,7 @@ jobs:
         job: ${{ fromJSON(needs.setup.outputs.jobs) }}
       fail-fast: false
     steps:
-      - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
+      - uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4.3.1
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
@@ -65,7 +65,7 @@ jobs:
           job: ${{ toJSON(matrix.job) }}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
+      - uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4.3.1
         with:
           role-to-assume: ${{ matrix.job.params.docker_build.registry.aws.iam.role }}
           aws-region: ${{ matrix.job.params.docker_build.registry.aws.iam.region }}
