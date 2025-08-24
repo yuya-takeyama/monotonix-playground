@@ -28,6 +28,14 @@ error() {
     echo -e "${RED}[ERROR]${NC} $1" >&2
 }
 
+# クリーンアップ処理
+cleanup_bak_files() {
+    find "$WORKFLOWS_DIR" -name "*.bak" -delete 2>/dev/null || true
+}
+
+# 異常終了時のクリーンアップ
+trap cleanup_bak_files EXIT
+
 # 最新リリースの情報を取得
 get_latest_release() {
     local release_info=$(gh release view --repo "$MONOTONIX_REPO" --json tagName,targetCommitish 2>/dev/null)
@@ -56,7 +64,8 @@ get_current_ref() {
         return 1
     fi
     
-    grep -oE 'yuya-takeyama/monotonix/actions/[^@]+@[a-f0-9]+' "$workflow_file" | head -1 | cut -d'@' -f2
+    # ブランチ名もコミットSHAもマッチするように修正
+    grep -oE 'yuya-takeyama/monotonix/actions/[^@]+@[^[:space:]#]+' "$workflow_file" | head -1 | cut -d'@' -f2
 }
 
 # 現在のrefを表示
@@ -107,19 +116,15 @@ switch_ref() {
             if grep -q "yuya-takeyama/monotonix/actions" "$workflow_file"; then
                 info "Updating $filename"
                 
-                # refとコメント部分を置き換え（行末までマッチさせる）
+                # refとコメント部分を置き換え
+                # macOSとLinuxの両方で動作するように調整
                 if [[ -n "$version_comment" ]]; then
-                    # バージョンコメント付きで置き換え
-                    sed -i.bak "s|yuya-takeyama/monotonix/actions/\\([^@]*\\)@[a-f0-9]*[[:space:]]*#.*$|yuya-takeyama/monotonix/actions/\\1@$new_ref # $version_comment|g" "$workflow_file"
-                    # コメントがない行も処理
-                    sed -i "s|yuya-takeyama/monotonix/actions/\\([^@]*\\)@[a-f0-9]*$|yuya-takeyama/monotonix/actions/\\1@$new_ref # $version_comment|g" "$workflow_file"
+                    # バージョンコメント付きで置き換え（コメントあり・なし両方を1つの正規表現で処理）
+                    sed -i.bak -E "s|(yuya-takeyama/monotonix/actions/[^@]+)@[^[:space:]#]+([[:space:]]*#[^$]*)?|\\1@$new_ref # $version_comment|g" "$workflow_file"
                 else
                     # コメントなしで置き換え（既存のコメントも削除）
-                    sed -i.bak "s|yuya-takeyama/monotonix/actions/\\([^@]*\\)@[a-f0-9]*[[:space:]]*#.*$|yuya-takeyama/monotonix/actions/\\1@$new_ref|g" "$workflow_file"
-                    # コメントがない行も処理
-                    sed -i "s|yuya-takeyama/monotonix/actions/\\([^@]*\\)@[a-f0-9]*$|yuya-takeyama/monotonix/actions/\\1@$new_ref|g" "$workflow_file"
+                    sed -i.bak -E "s|(yuya-takeyama/monotonix/actions/[^@]+)@[^[:space:]#]+([[:space:]]*#[^$]*)?|\\1@$new_ref|g" "$workflow_file"
                 fi
-                rm "${workflow_file}.bak"
             fi
         fi
     done
