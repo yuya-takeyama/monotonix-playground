@@ -1,0 +1,7 @@
+# Library module - testing validation errors
+app:
+  metadata:
+    team: invalid-team
+    owner: "not-starting-with-at"
+    tier: 5
+    slack_channel: "no-hash-prefix"

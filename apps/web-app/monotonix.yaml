@@ -1,5 +1,17 @@
+app:
+  metadata:
+    team: backend
+    owner: "@yuya-takeyama"
+    tier: 2
+    slack_channel: "#backend-alerts"
+    description: "Web application with microservices"
+
 jobs:
   go_test:
+    metadata:
+      priority: high
+      alert_on_failure: true
+      estimated_duration: 5
     on:
       pull_request:
       push:

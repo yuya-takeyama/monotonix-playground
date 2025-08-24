@@ -1,10 +1,21 @@
 app:
+  metadata:
+    team: backend
+    owner: "@yuya-takeyama"
+    tier: 1
+    slack_channel: "#backend-critical"
+    service_type: "api"
+    public_facing: true
   depends_on:
     - apps/web-app/pkg
     - apps/web-app/go.mod
     - apps/web-app/go.sum
 jobs:
   build_prd:
+    metadata:
+      priority: critical
+      alert_on_failure: true
+      estimated_duration: 10
     on:
       push:
         branches:
@@ -23,6 +34,10 @@ jobs:
         go_version_file: apps/web-app/go.mod
         cache_dependency_path: apps/web-app/go.sum
   build_dev_main:
+    metadata:
+      priority: medium
+      alert_on_failure: false
+      estimated_duration: 10
     on:
       push:
         branches:
@@ -41,6 +56,10 @@ jobs:
         go_version_file: apps/web-app/go.mod
         cache_dependency_path: apps/web-app/go.sum
   build_dev_pr:
+    metadata:
+      priority: high
+      alert_on_failure: false
+      estimated_duration: 10
     on:
       pull_request:
     configs:
