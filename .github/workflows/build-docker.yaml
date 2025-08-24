@@ -21,21 +21,21 @@ jobs:
       - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
         with:
           fetch-depth: 0
-      - uses: yuya-takeyama/monotonix/actions/load-jobs@1ee58090547501c1b691407d21db1dee9374de7e # v0.0.4
+      - uses: yuya-takeyama/monotonix/actions/load-jobs@yuya-takeyama/feat/metadata-support
         with:
           root-dir: apps
           required-config-keys: 'docker_build'
       - if: ${{ github.event_name == 'pull_request' }}
-        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@1ee58090547501c1b691407d21db1dee9374de7e # v0.0.4
+        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@yuya-takeyama/feat/metadata-support
       - uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4.3.1
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@1ee58090547501c1b691407d21db1dee9374de7e # v0.0.4
+      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@yuya-takeyama/feat/metadata-support
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@1ee58090547501c1b691407d21db1dee9374de7e # v0.0.4
+      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@yuya-takeyama/feat/metadata-support
         with:
           global-config-file-path: apps/monotonix-global.yaml
           timezone: Asia/Tokyo
@@ -58,7 +58,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@1ee58090547501c1b691407d21db1dee9374de7e # v0.0.4
+      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@yuya-takeyama/feat/metadata-support
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
