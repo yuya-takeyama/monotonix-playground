@@ -83,6 +83,7 @@ show_current() {
 # refを切り替え
 switch_ref() {
     local new_ref="$1"
+    local version_comment="${2:-}"  # オプション: バージョンコメント
     local current_ref=$(get_current_ref)
     
     if [[ -z "$current_ref" ]]; then
@@ -105,7 +106,19 @@ switch_ref() {
             # monotonix actionsが含まれているか確認
             if grep -q "yuya-takeyama/monotonix/actions" "$workflow_file"; then
                 info "Updating $filename"
-                sed -i.bak "s|yuya-takeyama/monotonix/actions/\\([^@]*\\)@[a-f0-9]*|yuya-takeyama/monotonix/actions/\\1@$new_ref|g" "$workflow_file"
+                
+                # refとコメント部分を置き換え（行末までマッチさせる）
+                if [[ -n "$version_comment" ]]; then
+                    # バージョンコメント付きで置き換え
+                    sed -i.bak "s|yuya-takeyama/monotonix/actions/\\([^@]*\\)@[a-f0-9]*[[:space:]]*#.*$|yuya-takeyama/monotonix/actions/\\1@$new_ref # $version_comment|g" "$workflow_file"
+                    # コメントがない行も処理
+                    sed -i "s|yuya-takeyama/monotonix/actions/\\([^@]*\\)@[a-f0-9]*$|yuya-takeyama/monotonix/actions/\\1@$new_ref # $version_comment|g" "$workflow_file"
+                else
+                    # コメントなしで置き換え（既存のコメントも削除）
+                    sed -i.bak "s|yuya-takeyama/monotonix/actions/\\([^@]*\\)@[a-f0-9]*[[:space:]]*#.*$|yuya-takeyama/monotonix/actions/\\1@$new_ref|g" "$workflow_file"
+                    # コメントがない行も処理
+                    sed -i "s|yuya-takeyama/monotonix/actions/\\([^@]*\\)@[a-f0-9]*$|yuya-takeyama/monotonix/actions/\\1@$new_ref|g" "$workflow_file"
+                fi
                 rm "${workflow_file}.bak"
             fi
         fi
@@ -121,7 +134,7 @@ reset_to_default() {
     local latest_tag=$(echo "$latest_info" | cut -d' ' -f2)
     
     info "Resetting to latest release: $latest_ref ($latest_tag)"
-    switch_ref "$latest_ref"
+    switch_ref "$latest_ref" "$latest_tag"
 }
 
 # メイン処理
