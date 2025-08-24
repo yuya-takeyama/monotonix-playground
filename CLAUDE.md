@@ -137,6 +137,66 @@ When testing new Monotonix features:
 3. **Document findings** - Note any unexpected behaviors or issues discovered during testing
 4. **Use aggressive testing approaches** - Don't hesitate to make breaking changes if it helps validate Monotonix functionality
 
+### Testing Monotonix PRs
+
+This repository includes utility scripts to efficiently test Monotonix changes before they are merged. These scripts allow you to quickly switch the Monotonix action references in all workflow files to test pull requests or specific branches from the [monotonix repository](https://github.com/yuya-takeyama/monotonix).
+
+**Available Scripts:**
+
+1. **`scripts/switch-monotonix-ref.sh`** - Low-level ref switching utility
+   ```bash
+   # Switch to a specific branch/tag/commit
+   ./scripts/switch-monotonix-ref.sh feat/metadata-support
+   
+   # Check current ref
+   ./scripts/switch-monotonix-ref.sh --current
+   
+   # Reset to latest release
+   ./scripts/switch-monotonix-ref.sh --reset
+   ```
+
+2. **`scripts/test-monotonix-pr.sh`** - High-level PR testing workflow
+   ```bash
+   # Test a specific PR from monotonix repository
+   ./scripts/test-monotonix-pr.sh 151
+   
+   # After testing, cleanup and restore defaults
+   ./scripts/test-monotonix-pr.sh --cleanup
+   ```
+
+**Typical Testing Workflow:**
+
+When you need to test a Monotonix PR (e.g., [PR #151](https://github.com/yuya-takeyama/monotonix/pull/151)):
+
+```bash
+# 1. Switch workflows to use the PR branch
+./scripts/test-monotonix-pr.sh 151
+
+# 2. Push changes to trigger CI with the new Monotonix version
+git push
+
+# 3. Monitor CI results
+gh pr checks --watch
+
+# 4. Make test changes to apps/ to validate the new feature
+# (e.g., add metadata fields to monotonix.yaml files)
+
+# 5. After testing, cleanup and restore defaults
+./scripts/test-monotonix-pr.sh --cleanup
+git push
+```
+
+**Background:**
+
+These scripts were created to streamline the testing process for Monotonix changes. Since this playground repository serves as the primary testing ground for Monotonix features, being able to quickly switch between different versions of Monotonix actions is essential for:
+
+- Validating new features before merging PRs
+- Testing breaking changes in isolation
+- Debugging issues with specific commits
+- Experimenting with unreleased features
+
+The scripts handle all the tedious work of updating action references across multiple workflow files, creating proper test commits, and cleaning up afterward, allowing you to focus on testing the actual functionality.
+
 ## Adding a New Application
 
 To add a new application to this monorepo:
