@@ -1,3 +1,36 @@
+metadata_schemas:
+  app:
+    type: object
+    required: ["team", "owner"]
+    properties:
+      team:
+        type: string
+        enum: ["platform", "backend", "frontend", "ml", "infra"]
+      owner:
+        type: string
+        pattern: "^@[a-zA-Z0-9-]+$"
+      tier:
+        type: integer
+        minimum: 1
+        maximum: 3
+      slack_channel:
+        type: string
+        pattern: "^#[a-zA-Z0-9-]+$"
+    additionalProperties: true
+  job:
+    type: object
+    properties:
+      priority:
+        type: string
+        enum: ["critical", "high", "medium", "low"]
+      alert_on_failure:
+        type: boolean
+      estimated_duration:
+        type: integer
+        minimum: 1
+        description: "Estimated duration in minutes"
+    additionalProperties: true
+
 job_types:
   docker_build:
     registries:

@@ -1,5 +1,17 @@
+app:
+  metadata:
+    team: platform
+    owner: "@yuya-takeyama"
+    tier: 3
+    slack_channel: "#platform-alerts"
+    description: "Simple Hello World service for testing"
+
 jobs:
   build_prd:
+    metadata:
+      priority: low
+      alert_on_failure: false
+      estimated_duration: 5
     on:
       push:
         branches:
@@ -15,6 +27,10 @@ jobs:
         platforms:
           - linux/amd64
   build_dev_main:
+    metadata:
+      priority: low
+      alert_on_failure: false
+      estimated_duration: 5
     on:
       push:
         branches:
@@ -30,6 +46,10 @@ jobs:
         platforms:
           - linux/amd64
   build_dev_pr:
+    metadata:
+      priority: medium
+      alert_on_failure: false
+      estimated_duration: 5
     on:
       pull_request:
     configs:
@@ -43,6 +63,10 @@ jobs:
         platforms:
           - linux/amd64
   go_test:
+    metadata:
+      priority: high
+      alert_on_failure: true
+      estimated_duration: 3
     on:
       pull_request:
       push:
