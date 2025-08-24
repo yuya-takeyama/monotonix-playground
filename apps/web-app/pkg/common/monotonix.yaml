@@ -5,4 +5,15 @@ app:
     owner: 'not-starting-with-at'
     tier: 5
     slack_channel: 'no-hash-prefix'
-jobs: {}
+jobs:
+  dummy_test:
+    metadata:
+      priority: invalid-priority
+      alert_on_failure: "not-a-boolean"
+      estimated_duration: -5
+    on:
+      pull_request:
+    configs:
+      go_test:
+        go_version_file: apps/web-app/go.mod
+        cache_dependency_path: apps/web-app/go.sum
