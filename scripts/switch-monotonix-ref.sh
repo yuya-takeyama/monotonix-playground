@@ -4,12 +4,11 @@ set -euo pipefail
 # Monotonix Actions ref切り替えスクリプト
 # Usage:
 #   ./scripts/switch-monotonix-ref.sh <ref>          # 指定したrefに切り替え
-#   ./scripts/switch-monotonix-ref.sh --reset        # デフォルト(v0.0.4)に戻す
+#   ./scripts/switch-monotonix-ref.sh --reset        # デフォルト(最新リリース)に戻す
 #   ./scripts/switch-monotonix-ref.sh --current      # 現在のrefを表示
 
-DEFAULT_REF="1ee58090547501c1b691407d21db1dee9374de7e" # v0.0.4
-DEFAULT_VERSION="v0.0.4"
 WORKFLOWS_DIR=".github/workflows"
+MONOTONIX_REPO="yuya-takeyama/monotonix"
 
 # 色付き出力
 RED='\033[0;31m'
@@ -27,6 +26,26 @@ warn() {
 
 error() {
     echo -e "${RED}[ERROR]${NC} $1" >&2
+}
+
+# 最新リリースの情報を取得
+get_latest_release() {
+    local release_info=$(gh release view --repo "$MONOTONIX_REPO" --json tagName,targetCommitish 2>/dev/null)
+    
+    if [[ -z "$release_info" ]]; then
+        error "Failed to fetch latest release information"
+        exit 1
+    fi
+    
+    local tag=$(echo "$release_info" | jq -r .tagName)
+    local commit=$(echo "$release_info" | jq -r .targetCommitish)
+    
+    # commitがSHAでない場合（ブランチ名の場合）、実際のSHAを取得
+    if [[ ! "$commit" =~ ^[a-f0-9]{40}$ ]]; then
+        commit=$(gh api "repos/$MONOTONIX_REPO/commits/$tag" --jq .sha 2>/dev/null | cut -c1-40)
+    fi
+    
+    echo "$commit $tag"
 }
 
 # 現在のrefを取得
@@ -48,10 +67,16 @@ show_current() {
         exit 1
     fi
     
-    if [[ "$current_ref" == "$DEFAULT_REF" ]]; then
-        info "Current ref: $current_ref (default: $DEFAULT_VERSION)"
+    # 最新リリースと比較
+    local latest_info=$(get_latest_release)
+    local latest_ref=$(echo "$latest_info" | cut -d' ' -f1)
+    local latest_tag=$(echo "$latest_info" | cut -d' ' -f2)
+    
+    if [[ "$current_ref" == "$latest_ref" ]]; then
+        info "Current ref: $current_ref (latest release: $latest_tag)"
     else
         info "Current ref: $current_ref"
+        info "Latest release: $latest_ref ($latest_tag)"
     fi
 }
 
@@ -89,10 +114,14 @@ switch_ref() {
     info "✅ Successfully switched to ref: $new_ref"
 }
 
-# デフォルトに戻す
+# デフォルト（最新リリース）に戻す
 reset_to_default() {
-    info "Resetting to default ref: $DEFAULT_REF ($DEFAULT_VERSION)"
-    switch_ref "$DEFAULT_REF"
+    local latest_info=$(get_latest_release)
+    local latest_ref=$(echo "$latest_info" | cut -d' ' -f1)
+    local latest_tag=$(echo "$latest_info" | cut -d' ' -f2)
+    
+    info "Resetting to latest release: $latest_ref ($latest_tag)"
+    switch_ref "$latest_ref"
 }
 
 # メイン処理
@@ -102,7 +131,7 @@ main() {
         echo ""
         echo "Options:"
         echo "  <ref>      Switch to specified ref (commit SHA or branch/tag)"
-        echo "  --reset    Reset to default ref ($DEFAULT_VERSION)"
+        echo "  --reset    Reset to latest release"
         echo "  --current  Show current ref"
         echo ""
         echo "Examples:"
