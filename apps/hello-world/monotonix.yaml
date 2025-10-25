@@ -1,6 +1,5 @@
 app:
   metadata:
-    team: platform
     owner: "@yuya-takeyama"
     tier: 3
     slack_channel: "#platform-alerts"
