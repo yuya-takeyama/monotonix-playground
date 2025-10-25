@@ -1,10 +1,3 @@
-app:
-  metadata:
-    owner: "@yuya-takeyama"
-    tier: 3
-    slack_channel: "#platform-alerts"
-    description: "Simple Hello World service for testing"
-
 jobs:
   build_prd:
     metadata:
