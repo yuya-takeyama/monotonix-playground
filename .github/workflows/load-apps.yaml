@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
       - id: load-apps
-        uses: yuya-takeyama/monotonix/actions/load-apps@add-load-apps-action
+        uses: yuya-takeyama/monotonix/actions/load-apps@main
         with:
           root-dir: apps
           global-config-file-path: apps/monotonix-global.yaml
