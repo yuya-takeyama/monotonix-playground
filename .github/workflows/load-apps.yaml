@@ -1,0 +1,28 @@
+name: load-apps
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - .github/workflows/load-apps.yaml
+      - apps/**
+
+jobs:
+  load-apps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          fetch-depth: 0
+      - id: load-apps
+        uses: yuya-takeyama/monotonix/actions/load-apps@add-load-apps-action
+        with:
+          root-dir: apps
+      - name: Display loaded apps
+        run: echo "$APPS_JSON" | jq .
+        env:
+          APPS_JSON: ${{ steps.load-apps.outputs.result }}
