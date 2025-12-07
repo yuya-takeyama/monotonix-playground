@@ -22,6 +22,7 @@ jobs:
         uses: yuya-takeyama/monotonix/actions/load-apps@add-load-apps-action
         with:
           root-dir: apps
+          global-config-file-path: apps/monotonix-global.yaml
       - name: Display loaded apps
         run: echo "$APPS_JSON" | jq .
         env:
