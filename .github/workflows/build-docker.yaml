@@ -73,7 +73,7 @@ jobs:
       - uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
         with:
           registry-type: ${{ matrix.job.params.docker_build.registry.aws.repository.type }}
-      - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
       # Go Build
       - if: ${{ matrix.job.configs.docker_build_go_build }}
