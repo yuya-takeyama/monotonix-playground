@@ -7,7 +7,7 @@ app:
     service_type: "worker"
     public_facing: false
   depends_on:
-    - ../..//pkg
+    - ../../pkg
     - ../../go.mod
     - ../../go.sum
 jobs:
