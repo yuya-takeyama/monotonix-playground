@@ -7,9 +7,9 @@ app:
     service_type: "api"
     public_facing: true
   depends_on:
-    - $root/apps/web-app/pkg
-    - $root/apps/web-app/go.mod
-    - $root/apps/web-app/go.sum
+    - $repoRoot/apps/web-app/pkg
+    - $repoRoot/apps/web-app/go.mod
+    - $repoRoot/apps/web-app/go.sum
 jobs:
   build_prd:
     metadata:
