@@ -7,9 +7,9 @@ app:
     service_type: "worker"
     public_facing: false
   depends_on:
-    - apps/web-app/pkg
-    - apps/web-app/go.mod
-    - apps/web-app/go.sum
+    - ../../pkg
+    - ../../go.mod
+    - ../../go.sum
 jobs:
   build_prd:
     metadata:
