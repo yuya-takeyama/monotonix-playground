@@ -74,27 +74,10 @@ jobs:
         with:
           registry-type: ${{ matrix.job.params.docker_build.registry.aws.repository.type }}
       - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
-
-      # Go Build
-      - if: ${{ matrix.job.configs.docker_build_go_build }}
-        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
-        with:
-          go-version-file: ${{ matrix.job.configs.docker_build_go_build.go_version_file }}
-          cache-dependency-path: ${{ matrix.job.configs.docker_build_go_build.cache_dependency_path }}
-      - if: ${{ matrix.job.configs.docker_build_go_build }}
-        name: Run Go Build for docker build
-        run: |
-          cd "$APP_PATH"
-          go build -o main
-        env:
-          APP_PATH: ${{ matrix.job.params.docker_build.context }}
-          CGO_ENABLED: '0'
-          GOOS: linux
-          GOARCH: amd64
-
       - uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
           context: ${{ matrix.job.params.docker_build.context }}
+          file: ${{ matrix.job.params.docker_build.dockerfile }}
           push: true
           tags: ${{ matrix.job.params.docker_build.tags }}
           platforms: ${{ matrix.job.params.docker_build.platforms }}
