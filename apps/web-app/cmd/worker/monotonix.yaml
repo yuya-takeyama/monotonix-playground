@@ -22,6 +22,8 @@ jobs:
           - main
     configs:
       docker_build:
+        context: ../..
+        dockerfile: Dockerfile
         registry:
           type: aws
           aws:
@@ -30,9 +32,6 @@ jobs:
         tagging: semver_datetime
         platforms:
           - linux/amd64
-      docker_build_go_build:
-        go_version_file: apps/web-app/go.mod
-        cache_dependency_path: apps/web-app/go.sum
   build_dev_main:
     metadata:
       priority: medium
@@ -44,6 +43,8 @@ jobs:
           - main
     configs:
       docker_build:
+        context: ../..
+        dockerfile: Dockerfile
         registry:
           type: aws
           aws:
@@ -52,9 +53,6 @@ jobs:
         tagging: always_latest
         platforms:
           - linux/amd64
-      docker_build_go_build:
-        go_version_file: apps/web-app/go.mod
-        cache_dependency_path: apps/web-app/go.sum
   build_dev_pr:
     metadata:
       priority: medium
@@ -64,6 +62,8 @@ jobs:
       pull_request:
     configs:
       docker_build:
+        context: ../..
+        dockerfile: Dockerfile
         registry:
           type: aws
           aws:
@@ -72,6 +72,3 @@ jobs:
         tagging: pull_request
         platforms:
           - linux/amd64
-      docker_build_go_build:
-        go_version_file: apps/web-app/go.mod
-        cache_dependency_path: apps/web-app/go.sum
