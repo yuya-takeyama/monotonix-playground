@@ -16,23 +16,24 @@ jobs:
       contents: read
       id-token: write
     outputs:
-      jobs: ${{ env.MONOTONIX_JOBS }}
+      jobs: ${{ steps.filter-jobs-by-dynamodb-state.outputs.result }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
-      - uses: yuya-takeyama/monotonix/actions/load-jobs@main
+      - uses: yuya-takeyama/monotonix/actions/load-jobs@yuya-takeyama/feat/file-based-jobs-io
         with:
           root-dir: apps
           required-config-keys: 'go_test'
           global-config-file-path: apps/monotonix-global.yaml
       - if: ${{ github.event_name == 'pull_request' }}
-        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@main
+        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-changed-files@yuya-takeyama/feat/file-based-jobs-io
       - uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@main
+      - id: filter-jobs-by-dynamodb-state
+        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@yuya-takeyama/feat/file-based-jobs-io
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
@@ -54,7 +55,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@main
+      - uses: yuya-takeyama/monotonix/actions/set-dynamodb-state-to-running@yuya-takeyama/feat/file-based-jobs-io
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
