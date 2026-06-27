@@ -16,7 +16,7 @@ jobs:
       contents: read
       id-token: write
     outputs:
-      jobs: ${{ env.MONOTONIX_JOBS }}
+      jobs: ${{ steps.filter-jobs-by-dynamodb-state.outputs.result }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -32,7 +32,8 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::920373013500:role/monotonix-state-manager
           aws-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@main
+      - id: filter-jobs-by-dynamodb-state
+        uses: yuya-takeyama/monotonix/actions/filter-jobs-by-dynamodb-state@main
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1

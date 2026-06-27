@@ -16,7 +16,7 @@ jobs:
       contents: read
       id-token: write
     outputs:
-      jobs: ${{ env.MONOTONIX_JOBS }}
+      jobs: ${{ steps.load-docker-build-job-params.outputs.result }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -36,7 +36,8 @@ jobs:
         with:
           dynamodb-table: monotonix-state
           dynamodb-region: ap-northeast-1
-      - uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@main
+      - id: load-docker-build-job-params
+        uses: yuya-takeyama/monotonix/actions/load-docker-build-job-params@main
         with:
           global-config-file-path: apps/monotonix-global.yaml
           timezone: Asia/Tokyo
